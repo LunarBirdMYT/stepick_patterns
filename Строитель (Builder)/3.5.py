@@ -39,3 +39,30 @@ class PersonBirthDateBuilder(PersonJobBuilder):
 pb = PersonBirthDateBuilder()
 me = pb.called('Dmitry').works_as_a('Quant').born('1/1/1980').build()
 print(me)
+
+
+# Практическое задание
+class CodeBuilder:
+    def __init__(self, root_name):
+        self.root_name = root_name
+        self.members = {}
+
+    def add_field(self, type, name):
+        self.members[type] = name
+        return self
+
+    def __str__(self):
+        lines = [f'class {self.root_name}:']
+        if not self.members:
+            lines.append('    pass')
+        else:
+            lines.append(f'    def __init__(self):')
+            for k, v in self.members.items():
+                lines.append(f'        self.{k} = {v}')
+        return '\n'.join(lines)
+
+
+cb = CodeBuilder('Foo')
+print(cb)
+cb = CodeBuilder('Person').add_field('name', '""').add_field('age', '0')
+print(cb)
